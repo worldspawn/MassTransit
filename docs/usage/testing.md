@@ -76,3 +76,20 @@ Assert.That(instance.OrderNumber, Is.EqualTo(orderNumber));
 
 Assert.IsTrue(await harness.Published.Any<OrderApprovalRequired>());
 ```
+
+### Message Scheduling
+
+To enable message scheduling for you test hardness inside `AddMassTransitTestHarness` add the scheduler to the configuration.
+
+``` cs
+.AddMassTransitTestHarness(cfg =>
+{
+    cfg.AddDelayedMessageScheduler();
+    
+    cfg.UsingInMemory((context, configurator) =>
+    {
+        configurator.UseDelayedMessageScheduler();
+        configurator.ConfigureEndpoints(context);
+    });
+})
+```
